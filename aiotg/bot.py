@@ -1,12 +1,12 @@
+import asyncio
+import json
+import logging
 import os
 import re
-import logging
-import asyncio
 from urllib.parse import urlparse
 
 import aiohttp
 from aiohttp import web
-import json
 
 from .chat import Chat, Sender
 from .reloader import run_with_reloader
@@ -177,6 +177,12 @@ class Bot:
         Manually register regexp based command
         """
         self._commands.append((regexp, fn))
+
+    def remove_command(self, regexp):
+        """
+        Remove previously added command in runtime
+        """
+        self._commands = list(filter(lambda x: x[0] != regexp, self._commands))
 
     def command(self, regexp):
         """
@@ -613,7 +619,7 @@ class Bot:
 
 class TgBot(Bot):
     def __init__(self, *args, **kwargs):
-        logger.warning("TgBot is depricated, use Bot instead")
+        logger.warning("TgBot is deprecated, use Bot instead")
         super().__init__(*args, **kwargs)
 
 
